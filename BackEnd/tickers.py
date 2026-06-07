@@ -8,6 +8,7 @@ DB_PATH = BASE_DIR / "financial_data.db"
 
 # Función para agregar registros
 def add_ticker(db_path, lista_tickers):
+    """This function basically adds new tickers to the table currency"""
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
 
@@ -31,6 +32,7 @@ def add_ticker(db_path, lista_tickers):
 
 # Función para eliminar registros
 def delete_ticker(db_path, lista_tickers):
+    """This function basically delete new tickers to the table currency"""
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
 

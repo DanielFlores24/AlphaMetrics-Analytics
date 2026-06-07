@@ -7,6 +7,7 @@ DB_PATH = BASE_DIR / "financial_data.db"
 
 # Función para agregar registros
 def add_currency(db_path, currencys):
+    """This function basically adds new currencies to the table currency"""
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
 
@@ -26,6 +27,7 @@ def add_currency(db_path, currencys):
 
 # Función para eliminar registros
 def delete_currency(db_path, currencys):
+    """This function delete adds new currencies to the table currency"""
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
 
