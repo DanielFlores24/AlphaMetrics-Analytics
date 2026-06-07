@@ -1,49 +1,50 @@
 import sqlite3
 from pathlib import Path
 import yfinance as yf
-#Buscamos la dirección de la carpeta Data para poner ahi la DB
+
+# Find the Data folder path to store the DB
 BASE_DIR = Path(__file__).resolve().parent.parent / "Data"
 DB_PATH = BASE_DIR / "financial_data.db"
 
-# Función para agregar registros
+# Function to add records
 def add_currency(db_path, currencys):
     """This function basically adds new currencies to the table currency"""
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
 
-    #Agregamos las divisas
+    # Add currencies
     for currency in currencys:
         try:
-            #Consulta SQL
+            # SQL Query
             query = "INSERT OR IGNORE INTO CURRENCY (name) VALUES (?)"
-            #Insertamos el currency a la DB
+            # Insert the currency into the DB
             cursor.execute(query, (currency,))
 
         except Exception as e:
-            print(f"Error al obtener datos de {currency}: {e}")
+            print(f"Error getting data for {currency}: {e}")
 
     conn.commit()
     conn.close()
 
-# Función para eliminar registros
+# Function to delete records
 def delete_currency(db_path, currencys):
-    """This function delete adds new currencies to the table currency"""
+    """This function basically deletes currencies from the table currency"""
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
 
-    #Agregamos las divisas
+    # Delete currencies
     for currency in currencys:
         try:
-            #Consulta SQL
+            # SQL Query
             query = "DELETE FROM CURRENCY WHERE name = ?"
-            #Eliminamos el currency a la DB
+            # Delete the currency from the DB
             cursor.execute(query, (currency,))
 
         except Exception as e:
-            print(f"Error al obtener datos de {currency}: {e}")
+            print(f"Error getting data for {currency}: {e}")
 
     conn.commit()
     conn.close()
 
-# ============================ Llamamos las funciones ==========================================
+# ============================ Call the functions ==========================================
 add_currency(DB_PATH, ["USD", "MXN"])

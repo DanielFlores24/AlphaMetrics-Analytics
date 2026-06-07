@@ -1,16 +1,17 @@
 import sqlite3
 from pathlib import Path
 
-#Buscamos la dirección de la carpeta Data para poner ahi la DB
+# Find the Data folder path to store the DB
 BASE_DIR = Path(__file__).resolve().parent.parent / "Data"
 DB_PATH = BASE_DIR / "financial_data.db"
 
 
 def init_db(db_path):
+    """Initializes the database by creating the required schema."""
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
 
-    #Creación del Esquema SQL
+    # Create SQL Schema
     cursor.executescript('''
         CREATE TABLE IF NOT EXISTS USERS (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -36,6 +37,7 @@ def init_db(db_path):
             date DATE,
             currency_rate REAL
         );
+        
         CREATE TABLE IF NOT EXISTS PRICE (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             id_ticker INTEGER,
@@ -89,8 +91,8 @@ def init_db(db_path):
 
     conn.commit()
     conn.close()
-    print("Base de datos creada exitosamente.")
+    print("Database created successfully.")
 
 
-# ============================ Llamamos la función ==========================================
+# ============================ Call the function ==========================================
 init_db(DB_PATH)

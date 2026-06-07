@@ -2,55 +2,55 @@ import sqlite3
 from pathlib import Path
 import yfinance as yf
 
-#Buscamos la dirección de la carpeta Data para poner ahi la DB
+# Find the Data folder path to store the DB
 BASE_DIR = Path(__file__).resolve().parent.parent / "Data"
 DB_PATH = BASE_DIR / "financial_data.db"
 
-# Función para agregar registros
+# Function to add records
 def add_ticker(db_path, lista_tickers):
     """This function basically adds new tickers to the table currency"""
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
 
-    #Agregar ticker de la lista, junto con el nombre de Yfinance
+    # Add ticker from the list, along with the name from Yfinance
     for ticker in lista_tickers:
         try:
-            #Instanciamos el objeto
+            # Instantiate the object
             ticker_object = yf.Ticker(ticker)
-            #Obtenemmos el nombre de el ticker
+            # Get the ticker name
             ticker_name = ticker_object.info.get("longName", "Desconocido")
-            #Consulta SQL
+            # SQL Query
             query = "INSERT OR IGNORE INTO TICKERS (ticker, name) VALUES (? , ?)"
-            #Insertamos el ticker a la DB
+            # Insert the ticker into the DB
             cursor.execute(query, (ticker.upper(), ticker_name))
 
         except Exception as e:
-            print(f"Error al obtener datos de {ticker}: {e}")
+            print(f"Error getting data for {ticker}: {e}")
 
     conn.commit()
     conn.close()
 
-# Función para eliminar registros
+# Function to delete records
 def delete_ticker(db_path, lista_tickers):
     """This function basically delete new tickers to the table currency"""
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
 
-    #Eliminar ticker de la lista
+    # Delete ticker from the list
     for ticker in lista_tickers:
         try:
-            #Consulta SQL
+            # SQL Query
             query = "DELETE FROM TICKERS WHERE ticker = ?"
-            #Insertamos el ticker a la DB
+            # Insert the ticker into the DB
             cursor.execute(query, (ticker.upper(),))
 
         except Exception as e:
-            print(f"Error al obtener datos de {ticker}: {e}")
+            print(f"Error getting data for {ticker}: {e}")
             
     conn.commit()
     conn.close()
 
-# ============================ Llamamos las funciones ==========================================
+# ============================ Call the functions ==========================================
 mis_tickers = ['AAPL']
 #add_ticker(DB_PATH, mis_tickers)
 delete_ticker(DB_PATH, mis_tickers)
